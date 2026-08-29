@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shopping Cart — MushBio</title>
+  <meta name="description" content="Review your organic mushroom basket and proceed to fast, fresh delivery.">
+  <link rel="stylesheet" href="styles.css?v=3.1">
+
+  <!-- Core Libraries: GSAP, ScrollTrigger, Lenis (Deferred for non-blocking render) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.0.45/dist/lenis.min.js"></script>
+  <script defer src="script.js?v=3.1"></script>
+</head>
+<body>
+
+  <!-- SITE HEADER -->
+  <header class="site-nav">
+    <a class="logo" href="index.html">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C7.5 2 4 5.5 4 10c0 2.2 1.8 4 4 4h8c2.2 0 4-1.8 4-4 0-4.5-3.5-8-8-8z"/>
+          <path d="M10 14v8"/>
+          <path d="M14 14v8"/>
+        </svg>
+      </span>
+      <span class="logo-text">
+        <strong>MushBio</strong>
+        <small>A COMPANY OF DODANNA &amp; CO</small>
+      </span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="index.html#benefits">Benefits</a>
+      <a href="index.html#blog">Blog</a>
+      <a href="index.html#about">About Us</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+
+    <div class="nav-tools">
+      <button class="tool-btn search-trigger-btn" aria-label="Search" title="Search (Press /)">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="tool-btn" aria-label="Account" title="Account">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+      <button class="tool-btn cart-trigger-btn" aria-label="Cart" title="Shopping Cart">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count">0</span>
+      </button>
+      <button class="tool-btn menu-toggle" aria-label="Toggle Menu">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="index.html#benefits">Benefits</a>
+    <a href="index.html#about">About Us</a>
+    <a href="index.html#blog">Blog</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+
+  <main>
+    <!-- PAGE TITLE BANNER -->
+    <section class="page-title-banner">
+      <div class="shell">
+        <div class="eyebrow">YOUR HARVEST BASKET</div>
+        <h1>Shopping Cart</h1>
+        <p>Fresh organic mushrooms harvested and packed with care.</p>
+        <div class="breadcrumb-nav">
+          <a href="index.html">Home</a>
+          <span>›</span>
+          <a href="shop.html">Shop</a>
+          <span>›</span>
+          <span style="font-weight:600;color:var(--ink)">Cart</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FULL CART LAYOUT -->
+    <section class="shell cart-layout">
+      <!-- Itemized Cart Table -->
+      <div class="cart-table-card">
+        <h2>Your Items</h2>
+        <div id="fullCartList"></div>
+      </div>
+
+      <!-- Order Summary Card -->
+      <aside class="summary-card">
+        <h2>Order Summary</h2>
+        
+        <div class="shipping-free-meter">
+          <span>Free Express Shipping on orders over ₹500!</span>
+          <div class="meter-track">
+            <div class="meter-fill" id="freeShipFill" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="summary-lines">
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <b id="cartSubtotal">₹0</b>
+          </div>
+          <div class="summary-line">
+            <span>Estimated Shipping</span>
+            <b id="cartShipping">₹0</b>
+          </div>
+          <div class="summary-line">
+            <span>Promo Discount</span>
+            <b id="cartDiscount" style="color:var(--olive)">₹0</b>
+          </div>
+          <div class="summary-line total-line">
+            <span>Total Amount</span>
+            <b id="cartFinalTotal">₹0</b>
+          </div>
+        </div>
+
+        <!-- Delivery Address Section (Phase 10A) -->
+        <div class="delivery-address-section" id="deliveryAddressSection" style="margin-bottom:20px;">
+          <div style="font-weight:700;font-size:13px;color:var(--ink);margin-bottom:10px;letter-spacing:0.02em;">
+            📦 Delivery Address
+          </div>
+
+          <!-- Saved address selector (populated by JS) -->
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <select id="savedAddressSelect" style="width:100%;box-sizing:border-box;background:var(--cream);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--ink);cursor:pointer;">
+              <option value="">⌛ Loading saved addresses…</option>
+            </select>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-secondary btn-pill-sm" id="useLocationBtn" onclick="handleUseCurrentLocation()" style="flex:1;min-width:140px;box-sizing:border-box;">
+                📍 Use Current Location
+              </button>
+              <button class="btn btn-secondary btn-pill-sm" id="addNewAddressBtn" onclick="handleAddNewAddress()" style="flex:1;min-width:120px;box-sizing:border-box;">
+                + Add New Address
+              </button>
+            </div>
+
+            <!-- GPS status message -->
+            <div id="locationStatus" style="display:none;padding:8px 12px;border-radius:6px;font-size:12.5px;font-weight:600;box-sizing:border-box;width:100%;"></div>
+          </div>
+
+          <!-- Accuracy warning (shown if GPS accuracy > 100m) -->
+          <div id="accuracyWarning" style="display:none;padding:8px 12px;background:#fefce8;border:1px solid #fde68a;border-radius:6px;font-size:12px;color:#92400e;margin-top:8px;box-sizing:border-box;">
+            ⚠️ Your location may be approximate. Please verify your address below.
+          </div>
+
+          <!-- Editable address form (shown when GPS detected or Add New clicked) -->
+          <div id="gpsAddressForm" style="display:none;margin-top:14px;padding:14px;background:var(--cream);border:1px solid var(--line);border-radius:var(--radius-sm);box-sizing:border-box;width:100%;">
+            <div style="font-weight:600;font-size:12.5px;margin-bottom:10px;color:var(--ink);">Review &amp; confirm your address</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <input id="addrRecipientName" type="text" placeholder="Full Name *" style="width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;">
+              <input id="addrPhone" type="tel" placeholder="Phone *" style="width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;">
+              <input id="addrLine1" type="text" placeholder="Address Line 1 *" style="width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;">
+              <input id="addrLine2" type="text" placeholder="Address Line 2 (optional)" style="width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <input id="addrCity" type="text" placeholder="City *" style="flex:1;min-width:120px;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;">
+                <input id="addrState" type="text" placeholder="State *" style="flex:1;min-width:120px;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;">
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <input id="addrPostalCode" type="text" placeholder="PIN Code *" style="flex:1;min-width:100px;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;">
+                <input id="addrCountry" type="text" value="IN" placeholder="Country" style="flex:0 0 60px;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;">
+              </div>
+              <textarea id="addrInstructions" placeholder="Delivery instructions (optional, e.g. 'Call before arriving')" maxlength="500" rows="2" style="width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;resize:vertical;"></textarea>
+              <!-- Hidden GPS metadata fields -->
+              <input type="hidden" id="addrLatitude">
+              <input type="hidden" id="addrLongitude">
+              <input type="hidden" id="addrAccuracy">
+              <input type="hidden" id="addrLocationSource" value="MANUAL">
+              <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="handleSaveGPSAddress()" style="flex:1;min-width:120px;box-sizing:border-box;min-height:44px;">
+                  ✓ Save &amp; Use This Address
+                </button>
+                <button class="btn btn-secondary" onclick="handleCancelAddressForm()" style="flex:1;min-width:100px;box-sizing:border-box;min-height:44px;">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promo Code Input -->
+        <div class="promo-box">
+          <input class="promo-input" id="promoInput" type="text" placeholder="Promo code (e.g. MUSH10)">
+          <button class="btn btn-secondary btn-pill-sm" id="applyPromoBtn">Apply</button>
+        </div>
+
+
+        <!-- Payment Status Banner (shown during checkout flow) -->
+        <div id="checkoutStatusBanner" style="display:none;padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:13px;font-weight:600;text-align:center;"></div>
+
+        <button class="btn btn-primary" id="proceedToCheckoutBtn" style="width:100%" onclick="handleProceedToCheckout()">Proceed to Checkout</button>
+        <div style="text-align:center;margin-top:14px">
+          <a class="btn-link" href="shop.html" style="font-size:12.5px">← Continue Shopping</a>
+        </div>
+
+        <!-- Secure payment trust badges -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;opacity:0.7;font-size:11px;">
+          <span>🔒</span>
+          <span>Secured by <strong>Razorpay</strong> · 256-bit SSL</span>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <!-- Value Badges Bar -->
+    <div class="footer-perks-bar">
+      <div class="shell footer-perks-grid">
+        <div class="footer-perk-item">
+          <div class="perk-icon">🌱</div>
+          <div class="perk-text">
+            <strong>100% Natural &amp; Fresh</strong>
+            <small>Pure mushrooms, no chemicals</small>
+          </div>
+        </div>
+        <div class="footer-perk-item">
+          <div class="perk-icon">🚚</div>
+          <div class="perk-text">
+            <strong>Free Delivery on Orders ₹499+</strong>
+            <small>Fast &amp; reliable doorstep delivery</small>
+          </div>
+        </div>
+        <div class="footer-perk-item">
+          <div class="perk-icon">♻️</div>
+          <div class="perk-text">
+            <strong>Sustainably Grown</strong>
+            <small>Eco-friendly farming practices</small>
+          </div>
+        </div>
+        <div class="footer-perk-item">
+          <div class="perk-icon">🛡️</div>
+          <div class="perk-text">
+            <strong>Packed with Care</strong>
+            <small>Hygienic &amp; safe packaging</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Footer Multi-Column Layout -->
+    <div class="footer-main">
+      <div class="shell footer-grid">
+        <!-- Col 1: Brand Info & Newsletter -->
+        <div class="footer-col footer-col-brand">
+          <a class="logo footer-logo" href="index.html">
+            <span class="logo-mark">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2C7.5 2 4 5.5 4 10c0 2.2 1.8 4 4 4h8c2.2 0 4-1.8 4-4 0-4.5-3.5-8-8-8z"/>
+                <path d="M10 14v8"/>
+                <path d="M14 14v8"/>
+              </svg>
+            </span>
+            <span class="logo-text">
+              <strong>MushBio</strong>
+              <small>A COMPANY OF DODANNA &amp; CO</small>
+            </span>
+          </a>
+          <p class="footer-desc">
+            MushBio is an organic agriculture venture of <strong>Dodanna &amp; CO</strong>, pioneering sustainable, farm-to-table mushrooms grown in Coorg, Karnataka.
+          </p>
+          <div class="footer-newsletter">
+            <h4>Stay in the loop</h4>
+            <p>Get recipes, updates &amp; offers straight to your inbox.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Subscribed to MushBio updates!'); this.reset();">
+              <input type="email" placeholder="Enter your email" required>
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="index.html#benefits">Benefits</a></li>
+            <li><a href="index.html#blog">Blog</a></li>
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Our Mushrooms -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">Our Mushrooms</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html?cat=oyster">Oyster Mushroom</a></li>
+            <li><a href="shop.html?cat=button">Button Mushroom</a></li>
+            <li><a href="shop.html?cat=shiitake">Shiitake Mushroom</a></li>
+            <li><a href="shop.html?cat=milky">Milky Mushroom</a></li>
+            <li><a href="shop.html?cat=portobello">Portobello Mushroom</a></li>
+            <li><a href="shop.html" class="view-all-link">View All Products →</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Contact Us -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">Contact Us</h3>
+          <ul class="footer-contact-list">
+            <li>
+              <span class="contact-icon">📍</span>
+              <span>MushBio Farm (Dodanna &amp; CO), Green Valley, Coorg, Karnataka – 571201</span>
+            </li>
+            <li>
+              <span class="contact-icon">📞</span>
+              <span>+91 98765 43210</span>
+            </li>
+            <li>
+              <span class="contact-icon">✉️</span>
+              <span>hello@mushbio.com</span>
+            </li>
+            <li>
+              <span class="contact-icon">⏰</span>
+              <span>Mon – Sat: 9:00 AM – 6:00 PM</span>
+            </li>
+          </ul>
+          <div class="footer-follow-title">Follow us</div>
+          <div class="footer-social-row">
+            <a href="#" aria-label="Instagram" class="social-icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" aria-label="Facebook" class="social-icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.6 5H18V0h-3.808C10.595 0 9 1.583 9 4.615V8z"/></svg>
+            </a>
+            <a href="#" aria-label="WhatsApp" class="social-icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </a>
+            <a href="#" aria-label="Facebook" class="social-icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.6 5H18V0h-3.808C10.595 0 9 1.583 9 4.615V8z"/></svg>
+            </a>
+            <a href="#" aria-label="WhatsApp" class="social-icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <div class="shell footer-bottom-flex">
+        <div class="footer-legal">
+          <span>© 2026 MushBio (A Company of Dodanna &amp; CO). All rights reserved.</span>
+          <span class="divider-dot">•</span>
+          <span class="maintainer-badge">A Company of <strong>Dodanna &amp; CO</strong></span>
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <span>|</span>
+          <a href="#">Terms of Service</a>
+          <span>|</span>
+          <a href="#">Shipping &amp; Returns</a>
+        </div>
+        <div class="footer-payments-wrap">
+          <span>We accept</span>
+          <div class="footer-payments">
+            <span class="pay-card-badge visa">VISA</span>
+            <span class="pay-card-badge mc">MC</span>
+            <span class="pay-card-badge upi">UPI</span>
+            <span class="pay-card-badge rupay">RuPay</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- PERSISTENT SLIDE-OUT CART DRAWER -->
+  <div class="cart-drawer-overlay">
+    <aside class="cart-drawer" aria-label="Shopping Cart Drawer">
+      <div class="drawer-header">
+        <h2>Your Basket</h2>
+        <button class="close-btn close-drawer-btn" aria-label="Close Cart">✕</button>
+      </div>
+
+      <div class="free-shipping-progress" id="freeShipMeter">
+        <span id="freeShipText">Add ₹500 more for Free Delivery!</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="freeShipFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="drawer-items"></div>
+
+      <div class="drawer-footer">
+        <div class="drawer-subtotal-row">
+          <span>Subtotal</span>
+          <b id="drawerSubtotal">₹0</b>
+        </div>
+        <a class="btn btn-primary" href="cart.html" style="width:100%">View Full Cart & Checkout</a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- LIVE SEARCH COMMAND PALETTE MODAL -->
+  <div class="modal-overlay" id="searchModal">
+    <div class="modal-container search-modal-box">
+      <button class="modal-close-btn" aria-label="Close Search">✕</button>
+      <div class="search-input-header">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-field" id="searchLiveInput" type="text" placeholder="Search mushrooms...">
+      </div>
+      <div class="search-matches-list" id="searchResults"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast"></div>
+</body>
+</html>

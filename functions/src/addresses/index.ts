@@ -1,0 +1,13 @@
+/**
+ * ============================================================================
+ * MUSHBIO ADDRESS BOOK MODULE EXPORTS (PHASE 06)
+ * ============================================================================
+ */
+
+export * from "./dto";
+export * from "./schemas";
+export * from "./mapper";
+export * from "./repository";
+export * from "./service";
+export * from "./controller";
+export * from "./routes";

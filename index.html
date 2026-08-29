@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MushBio — Fresh Mushrooms. Better Living.</title>
+  <meta name="description" content="Premium quality mushrooms, sustainably grown and delivered fresh to your doorstep.">
+  <link rel="stylesheet" href="styles.css?v=3.1">
+
+  <!-- Core Libraries: Three.js, GSAP, ScrollTrigger, Lenis (Deferred for non-blocking render) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.0.45/dist/lenis.min.js"></script>
+  <script defer src="script.js?v=3.1"></script>
+</head>
+<body>
+
+  <!-- SITE HEADER -->
+  <header class="site-nav">
+    <a class="logo" href="index.html">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C7.5 2 4 5.5 4 10c0 2.2 1.8 4 4 4h8c2.2 0 4-1.8 4-4 0-4.5-3.5-8-8-8z"/>
+          <path d="M10 14v8"/>
+          <path d="M14 14v8"/>
+        </svg>
+      </span>
+      <span class="logo-text">
+        <strong>MushBio</strong>
+        <small>A COMPANY OF DODANNA &amp; CO</small>
+      </span>
+    </a>
+
+    <nav class="nav-links">
+      <a class="active" href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#blog">Blog</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="nav-tools">
+      <button class="tool-btn search-trigger-btn" aria-label="Search" title="Search (Press /)">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="tool-btn" aria-label="Account" title="Account">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+      <button class="tool-btn cart-trigger-btn" aria-label="Cart" title="Shopping Cart">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count">0</span>
+      </button>
+      <button class="tool-btn menu-toggle" aria-label="Toggle Menu">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-menu">
+    <a class="active" href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="#benefits">Benefits</a>
+    <a href="#blog">Blog</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <main>
+    <!-- MASTER HERO SECTION (#home) -->
+    <section class="home-hero" id="home">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">☘ &nbsp; NATURE. NUTRITION. YOU. &nbsp; ☘ &nbsp; • &nbsp; DODANNA &amp; CO</div>
+          <h1>Fresh<br>Mushrooms.<br>Better Living.</h1>
+          <p>MushBio, an organic agriculture venture by <strong>Dodanna &amp; CO</strong>, delivers sustainably grown, farm-fresh gourmet mushrooms directly to your doorstep.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="shop.html">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              Shop Now
+            </a>
+            <a class="btn-link" href="#benefits">
+              Explore Benefits <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 3D Interactive WebGL Stage with Badges -->
+        <div class="hero-stage-container" aria-label="Interactive 3D Mushroom Showcase">
+          <!-- True 3D WebGL Canvas -->
+          <canvas id="webglHeroCanvas"></canvas>
+
+          <!-- Floating Product Badge 1 (Top Right) -->
+          <div class="floating-chip chip-pos-1" onclick="addToCart(1)">
+            <img src="assets/oyster.jpg" alt="Oyster Mushroom">
+            <div class="chip-info">
+              <strong>Oyster<br>Mushroom</strong>
+              <small>1kg</small>
+              <b>₹280</b>
+            </div>
+            <button class="chip-add-btn" aria-label="Add Oyster Mushroom">+</button>
+          </div>
+
+          <!-- Floating Product Badge 2 (Mid Left) -->
+          <div class="floating-chip chip-pos-2" onclick="addToCart(2)">
+            <img src="assets/button.jpg" alt="Button Mushroom">
+            <div class="chip-info">
+              <strong>Button<br>Mushroom</strong>
+              <small>500g</small>
+              <b>₹120</b>
+            </div>
+            <button class="chip-add-btn" aria-label="Add Button Mushroom">+</button>
+          </div>
+
+          <!-- Floating Product Badge 3 (Bottom Right) -->
+          <div class="floating-chip chip-pos-3" onclick="addToCart(3)">
+            <img src="assets/shiitake.jpg" alt="Shiitake Mushroom">
+            <div class="chip-info">
+              <strong>Shiitake<br>Mushroom</strong>
+              <small>250g</small>
+              <b>₹180</b>
+            </div>
+            <button class="chip-add-btn" aria-label="Add Shiitake Mushroom">+</button>
+          </div>
+
+          <!-- Wooden Quality Sign Plaque -->
+          <div class="wood-sign-plaque">
+            <span>🌿</span>
+            <strong>100% Natural</strong>
+            <small>No Chemicals · No Preservatives</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOP BY CATEGORY & WHY MUSHROOMS -->
+    <section class="home-category-bar" id="shop-preview">
+      <div class="shell category-bar-grid">
+        <!-- Categories -->
+        <div>
+          <div class="category-bar-head">
+            <h2>Shop by Category</h2>
+            <a class="btn-link" href="shop.html" style="font-size:13px">View all →</a>
+          </div>
+          <div class="category-pills-row">
+            <a class="cat-circle-item" href="shop.html?cat=oyster">
+              <div class="cat-circle-img"><img src="assets/oyster.jpg" alt="Oyster"></div>
+              <span>Oyster</span>
+            </a>
+            <a class="cat-circle-item" href="shop.html?cat=button">
+              <div class="cat-circle-img"><img src="assets/button.jpg" alt="Button"></div>
+              <span>Button</span>
+            </a>
+            <a class="cat-circle-item" href="shop.html?cat=shiitake">
+              <div class="cat-circle-img"><img src="assets/shiitake.jpg" alt="Shiitake"></div>
+              <span>Shiitake</span>
+            </a>
+            <a class="cat-circle-item" href="shop.html?cat=milky">
+              <div class="cat-circle-img"><img src="assets/milky.jpg" alt="Milky"></div>
+              <span>Milky</span>
+            </a>
+            <a class="cat-circle-item" href="shop.html?cat=portobello">
+              <div class="cat-circle-img"><img src="assets/portobello.jpg" alt="Portobello"></div>
+              <span>Portobello</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="category-bar-divider"></div>
+
+        <!-- Why Mushrooms -->
+        <div>
+          <div class="category-bar-head">
+            <h2 class="why-heading">Why Mushrooms?</h2>
+          </div>
+          <div class="why-row">
+            <div class="why-card">
+              <div class="why-icon">☘</div>
+              <div class="why-info">
+                <b>Rich in Nutrition</b>
+                <small>Packed with essential vitamins and minerals.</small>
+              </div>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">🛡</div>
+              <div class="why-info">
+                <b>Boosts Immunity</b>
+                <small>Natural compounds that support immune defense.</small>
+              </div>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">🌱</div>
+              <div class="why-info">
+                <b>Sustainable Choice</b>
+                <small>Eco-friendly, low-impact, and good for the planet.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFITS OF MUSHROOMS SECTION -->
+    <section class="benefits-section" id="benefits">
+      <div class="shell">
+        <div class="benefits-grid">
+          <div class="benefits-basket-frame">
+            <img src="assets/benefits.jpg" alt="Basket of freshly harvested organic mushrooms">
+          </div>
+          <div class="benefits-copy-wrap">
+            <div class="eyebrow">☘ &nbsp; NATURE'S SUPERFOOD. &nbsp; ☘</div>
+            <h2>Benefits of<br>Mushrooms</h2>
+            
+            <div class="benefit-pill-list">
+              <div class="benefit-row-card">
+                <div class="benefit-icon-wrap">
+                  <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="benefit-info">
+                  <h3>Rich in Nutrition</h3>
+                  <p>Loaded with vitamins, minerals, and antioxidants for peak daily vitality.</p>
+                </div>
+              </div>
+
+              <div class="benefit-row-card">
+                <div class="benefit-icon-wrap">
+                  <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div class="benefit-info">
+                  <h3>Boosts Immunity</h3>
+                  <p>Beta-glucans and active bioactive compounds help strengthen natural immunity.</p>
+                </div>
+              </div>
+
+              <div class="benefit-row-card">
+                <div class="benefit-icon-wrap">
+                  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div class="benefit-info">
+                  <h3>Heart Healthy</h3>
+                  <p>Naturally low in sodium and rich in potassium to support cardiovascular wellness.</p>
+                </div>
+              </div>
+
+              <div class="benefit-row-card">
+                <div class="benefit-icon-wrap">
+                  <svg viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+                </div>
+                <div class="benefit-info">
+                  <h3>Weight Friendly</h3>
+                  <p>Low in calories, high in dietary fiber, perfect for clean, wholesome nutrition.</p>
+                </div>
+              </div>
+
+              <div class="benefit-row-card">
+                <div class="benefit-icon-wrap">
+                  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/></svg>
+                </div>
+                <div class="benefit-info">
+                  <h3>Sustainable Choice</h3>
+                  <p>Eco-friendly, low-carbon footprint farming that regenerates soil and preserves nature.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG / JOURNAL SECTION -->
+    <section class="blog-section" id="blog">
+      <div class="shell">
+        <div class="section-header-center">
+          <h2>Mushroom Journal</h2>
+          <p>Tips, recipes and insights for a healthier you.</p>
+        </div>
+
+        <!-- Featured Article -->
+        <article class="featured-article-card">
+          <div class="featured-media">
+            <img src="assets/blog1.jpg" alt="Health benefits of mushrooms">
+          </div>
+          <div class="featured-content">
+            <div class="article-date">May 12, 2024</div>
+            <h3 class="featured-title">10 Health Benefits of Eating Mushrooms</h3>
+            <p class="featured-excerpt">Discover how mushrooms can improve your health naturally with potent antioxidants and immune-enhancing nutrients.</p>
+            <a class="btn-link" href="#blog">Read More <span>→</span></a>
+          </div>
+        </article>
+
+        <!-- 3-Column Article Cards -->
+        <div class="blog-grid">
+          <article class="article-card">
+            <div class="article-img">
+              <img src="assets/blog2.jpg" alt="How we grow mushrooms">
+            </div>
+            <div class="article-body">
+              <div class="article-date">Apr 28, 2024</div>
+              <h3 class="article-title">How We Grow Our Mushrooms</h3>
+              <p class="article-desc">Sustainable practices for premium quality and natural potency.</p>
+              <a class="btn-link" href="#blog" style="font-size:12.5px;margin-top:auto">Read Article →</a>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-img">
+              <img src="assets/blog3.jpg" alt="Mushroom recipes">
+            </div>
+            <div class="article-body">
+              <div class="article-date">Apr 18, 2024</div>
+              <h3 class="article-title">Mushroom Recipes You'll Love</h3>
+              <p class="article-desc">Easy, nutrient-packed and delicious recipes to try for dinner.</p>
+              <a class="btn-link" href="#blog" style="font-size:12.5px;margin-top:auto">Read Article →</a>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-img">
+              <img src="assets/button.jpg" alt="Mushrooms vs other vegetables">
+            </div>
+            <div class="article-body">
+              <div class="article-date">Apr 10, 2024</div>
+              <h3 class="article-title">Mushrooms vs Other Vegetables</h3>
+              <p class="article-desc">Why fungi are truly nature's unique nutritional powerhouse.</p>
+              <a class="btn-link" href="#blog" style="font-size:12.5px;margin-top:auto">Read Article →</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="center-btn-wrap">
+          <a class="btn btn-primary" href="#blog">View All Articles</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT MUSHBIO SECTION -->
+    <section class="about-section" id="about">
+      <div class="shell about-grid">
+        <div class="about-copy">
+          <div class="eyebrow">☘ &nbsp; NATURE. NUTRITION. YOU. &nbsp; ☘ &nbsp; • &nbsp; DODANNA &amp; CO</div>
+          <h2>About MushBio</h2>
+          <p>At MushBio, a company of <strong>Dodanna &amp; CO</strong>, we are passionate about bringing the pure goodness of farm-fresh mushrooms to your table. Grown with care using sustainable practices in the lush highlands of Coorg, Karnataka.</p>
+
+          <!-- Horizontal Farm Pathway -->
+          <div class="farm-journey-strip">
+            <div class="journey-step"><span>🌱</span> Farm</div>
+            <div class="journey-step"><span>🍄</span> Growing</div>
+            <div class="journey-step"><span>✂</span> Harvest</div>
+            <div class="journey-step"><span>📦</span> Packing</div>
+            <div class="journey-step"><span>🍳</span> Kitchen</div>
+          </div>
+
+          <div class="about-values-row">
+            <div class="value-box">
+              <div class="value-box-icon">🌱</div>
+              <div class="value-box-text">
+                <b>Sustainably Grown</b>
+                <small>We use eco-friendly farming methods.</small>
+              </div>
+            </div>
+            <div class="value-box">
+              <div class="value-box-icon">⭐</div>
+              <div class="value-box-text">
+                <b>Premium Quality</b>
+                <small>Handpicked for freshness and taste.</small>
+              </div>
+            </div>
+            <div class="value-box">
+              <div class="value-box-icon">🚚</div>
+              <div class="value-box-text">
+                <b>Delivered Fresh</b>
+                <small>From our farm to your doorstep.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-media-frame">
+          <img src="assets/about.jpg" alt="MushBio organic mushroom cultivation">
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact-section" id="contact">
+      <div class="shell contact-layout">
+        <div class="contact-info-panel">
+          <h2>Get in Touch</h2>
+          <p class="contact-subtitle">We'd love to hear from you!</p>
+
+          <div class="contact-cards-list">
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div class="contact-text">
+                <b>Email</b>
+                <span>hello@mushbio.com</span>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div class="contact-text">
+                <b>Phone</b>
+                <span>+91 98765 43210</span>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="contact-text">
+                <b>Farm &amp; Office</b>
+                <span>MushBio Farms (Dodanna &amp; CO), Green Valley, Coorg, Karnataka – 571201</span>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="contact-text">
+                <b>Hours</b>
+                <span>Mon - Sat: 9:00 AM - 6:00 PM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="social-pills">
+            <a class="social-btn" href="#" aria-label="Facebook">f</a>
+            <a class="social-btn" href="#" aria-label="Instagram">📸</a>
+            <a class="social-btn" href="#" aria-label="Twitter">𝕏</a>
+            <a class="social-btn" href="#" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-card">
+          <form class="contact-form">
+            <div class="form-group">
+              <input class="form-input" type="text" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+              <input class="form-input" type="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-group">
+              <input class="form-input" type="text" placeholder="Subject" required>
+            </div>
+            <div class="form-group">
+              <textarea class="form-textarea" placeholder="Your Message" required></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit" style="width:100%">Send Message</button>
+          </form>
+
+          <!-- Decorative Fresh Basket Element -->
+          <div class="contact-decoration-basket">
+            <img src="assets/basket.jpg" alt="Decorative fresh mushroom basket">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EAT HEALTHY, LIVE HEALTHY STATS BANNER -->
+    <section class="stats-banner-section">
+      <div class="shell">
+        <div class="olive-stats-banner">
+          <div class="banner-content">
+            <div class="banner-head">
+              <div>
+                <h2>Eat Healthy, Live Healthy</h2>
+                <p>Make mushrooms a part of your daily diet and experience the natural goodness.</p>
+              </div>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-num" data-target="50+">50+</div>
+                <div class="stat-label">Varieties Grown</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num" data-target="10K+">10K+</div>
+                <div class="stat-label">Happy Customers</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num" data-target="100%">100%</div>
+                <div class="stat-label">Natural & Safe</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num" data-target="4.8 ★">4.8 ★</div>
+                <div class="stat-label">Customer Rating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <!-- Value Badges Bar -->
+    <div class="footer-perks-bar">
+      <div class="shell footer-perks-grid">
+        <div class="footer-perk-item">
+          <div class="perk-icon">🌱</div>
+          <div class="perk-text">
+            <strong>100% Natural &amp; Fresh</strong>
+            <small>Pure mushrooms, no chemicals</small>
+          </div>
+        </div>
+        <div class="footer-perk-item">
+          <div class="perk-icon">🚚</div>
+          <div class="perk-text">
+            <strong>Free Delivery on Orders ₹499+</strong>
+            <small>Fast &amp; reliable doorstep delivery</small>
+          </div>
+        </div>
+        <div class="footer-perk-item">
+          <div class="perk-icon">♻️</div>
+          <div class="perk-text">
+            <strong>Sustainably Grown</strong>
+            <small>Eco-friendly farming practices</small>
+          </div>
+        </div>
+        <div class="footer-perk-item">
+          <div class="perk-icon">🛡️</div>
+          <div class="perk-text">
+            <strong>Packed with Care</strong>
+            <small>Hygienic &amp; safe packaging</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Footer Multi-Column Layout -->
+    <div class="footer-main">
+      <div class="shell footer-grid">
+        <!-- Col 1: Brand Info & Newsletter -->
+        <div class="footer-col footer-col-brand">
+          <a class="logo footer-logo" href="index.html">
+            <span class="logo-mark">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2C7.5 2 4 5.5 4 10c0 2.2 1.8 4 4 4h8c2.2 0 4-1.8 4-4 0-4.5-3.5-8-8-8z"/>
+                <path d="M10 14v8"/>
+                <path d="M14 14v8"/>
+              </svg>
+            </span>
+            <span class="logo-text">
+              <strong>MushBio</strong>
+              <small>A COMPANY OF DODANNA &amp; CO</small>
+            </span>
+          </a>
+          <p class="footer-desc">
+            MushBio is an organic agriculture venture of <strong>Dodanna &amp; CO</strong>, pioneering sustainable, farm-to-table mushrooms grown in Coorg, Karnataka.
+          </p>
+          <div class="footer-newsletter">
+            <h4>Stay in the loop</h4>
+            <p>Get recipes, updates &amp; offers straight to your inbox.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Subscribed to MushBio updates!'); this.reset();">
+              <input type="email" placeholder="Enter your email" required>
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="#benefits">Benefits</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Our Mushrooms -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">Our Mushrooms</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html?cat=oyster">Oyster Mushroom</a></li>
+            <li><a href="shop.html?cat=button">Button Mushroom</a></li>
+            <li><a href="shop.html?cat=shiitake">Shiitake Mushroom</a></li>
+            <li><a href="shop.html?cat=milky">Milky Mushroom</a></li>
+            <li><a href="shop.html?cat=portobello">Portobello Mushroom</a></li>
+            <li><a href="shop.html" class="view-all-link">View All Products →</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Contact Us -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">Contact Us</h3>
+          <ul class="footer-contact-list">
+            <li>
+              <span class="contact-icon">📍</span>
+              <span>MushBio Farm (Dodanna &amp; CO), Green Valley, Coorg, Karnataka – 571201</span>
+            </li>
+            <li>
+              <span class="contact-icon">📞</span>
+              <span>+91 98765 43210</span>
+            </li>
+            <li>
+              <span class="contact-icon">✉️</span>
+              <span>hello@mushbio.com</span>
+            </li>
+            <li>
+              <span class="contact-icon">⏰</span>
+              <span>Mon – Sat: 9:00 AM – 6:00 PM</span>
+            </li>
+          </ul>
+          <div class="footer-follow-title">Follow us</div>
+          <div class="footer-social-row">
+            <a href="#" aria-label="Instagram" class="social-icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" aria-label="Facebook" class="social-icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.6 5H18V0h-3.808C10.595 0 9 1.583 9 4.615V8z"/></svg>
+            </a>
+            <a href="#" aria-label="WhatsApp" class="social-icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <div class="shell footer-bottom-flex">
+        <div class="footer-legal">
+          <span>© 2026 MushBio (A Company of Dodanna &amp; CO). All rights reserved.</span>
+          <span class="divider-dot">•</span>
+          <span class="maintainer-badge">A Company of <strong>Dodanna &amp; CO</strong></span>
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <span>|</span>
+          <a href="#">Terms of Service</a>
+          <span>|</span>
+          <a href="#">Shipping &amp; Returns</a>
+        </div>
+        <div class="footer-payments-wrap">
+          <span>We accept</span>
+          <div class="footer-payments">
+            <span class="pay-card-badge visa">VISA</span>
+            <span class="pay-card-badge mc">MC</span>
+            <span class="pay-card-badge upi">UPI</span>
+            <span class="pay-card-badge rupay">RuPay</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- PERSISTENT SLIDE-OUT CART DRAWER -->
+  <div class="cart-drawer-overlay">
+    <aside class="cart-drawer" aria-label="Shopping Cart Drawer">
+      <div class="drawer-header">
+        <h2>Your Basket</h2>
+        <button class="close-btn close-drawer-btn" aria-label="Close Cart">✕</button>
+      </div>
+
+      <div class="free-shipping-progress" id="freeShipMeter">
+        <span id="freeShipText">Add ₹500 more for Free Delivery!</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="freeShipFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="drawer-items"></div>
+
+      <div class="drawer-footer">
+        <div class="drawer-subtotal-row">
+          <span>Subtotal</span>
+          <b id="drawerSubtotal">₹0</b>
+        </div>
+        <a class="btn btn-primary" href="cart.html" style="width:100%">View Full Cart & Checkout →</a>
+        <div class="drawer-trust-badge">
+          <span>🌿</span> 100% Farm Fresh · <span>🔒</span> Secure Checkout
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- LIVE SEARCH COMMAND PALETTE MODAL -->
+  <div class="modal-overlay" id="searchModal">
+    <div class="modal-container search-modal-box">
+      <button class="modal-close-btn" aria-label="Close Search">✕</button>
+      <div class="search-input-header">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-field" id="searchLiveInput" type="text" placeholder="Search mushrooms, benefits, recipes...">
+      </div>
+      <div class="search-matches-list" id="searchResults"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast"></div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // =========================================================================
+    // MUSHBIO FIREBASE STORAGE SECURITY RULES (PHASE 01 FOUNDATION)
+    //
+    // Security Posture: STRICT DENY-BY-DEFAULT
+    // No arbitrary public uploads.
+    // Explicit path validation, content-type checks, and size limits.
+    // =========================================================================
+
+    // Global Catch-all: Deny all operations by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+
+    function isValidImage() {
+      return request.resource.contentType.matches('image/(jpeg|png|webp|avif)');
+    }
+
+    function isUnderMaxSize(maxMb) {
+      return request.resource.size < maxMb * 1024 * 1024;
+    }
+
+    // Structure for future phases:
+
+    // 1. Product Images (Read: Public, Write: Admin only, Max: 5MB)
+    match /products/{productId}/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidImage() && isUnderMaxSize(5);
+    }
+
+    // 2. Blog Images (Read: Public, Write: Admin only, Max: 5MB)
+    match /blogs/{blogId}/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidImage() && isUnderMaxSize(5);
+    }
+
+    // 3. User Avatar/Uploads (Read: Authenticated, Write: Owner only, Max: 2MB)
+    match /users/{userId}/avatars/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) && isValidImage() && isUnderMaxSize(2);
+    }
+  }
+}

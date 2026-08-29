@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "mushbio-organics",
+    "development": "mushbio-organics-dev",
+    "production": "mushbio-organics"
+  }
+}

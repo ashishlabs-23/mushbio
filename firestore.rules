@@ -1,0 +1,207 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================================
+    // MUSHBIO FIRESTORE SECURITY RULES (PHASE 02)
+    //
+    // Security Posture: STRICT LEAST-PRIVILEGE & DENY-BY-DEFAULT
+    // Sensitive commerce (Orders, Inventory, Payments, Audit Logs) is SERVER-ONLY.
+    // =========================================================================
+
+    // Global Catch-all (Deny anything not explicitly permitted)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // HELPER FUNCTIONS
+    // -------------------------------------------------------------------------
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isStaff() {
+      return isSignedIn() && (request.auth.token.role == 'STAFF' || request.auth.token.role == 'ADMIN');
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.role == 'ADMIN';
+    }
+
+    // -------------------------------------------------------------------------
+    // 1. USERS & ADDRESSES
+    // -------------------------------------------------------------------------
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isStaff();
+      
+      // User can create their initial profile, but CANNOT self-assign STAFF/ADMIN role
+      allow create: if isOwner(userId) 
+        && request.resource.data.uid == userId
+        && (!('role' in request.resource.data) || request.resource.data.role == 'CUSTOMER')
+        && (!('status' in request.resource.data) || request.resource.data.status == 'ACTIVE');
+
+      // User can update profile, but CANNOT change role, status, or emailVerified
+      allow update: if isOwner(userId)
+        && request.resource.data.uid == resource.data.uid
+        && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role)
+        && (!('status' in request.resource.data) || request.resource.data.status == resource.data.status)
+        && (!('emailVerified' in request.resource.data) || request.resource.data.emailVerified == resource.data.emailVerified)
+        || isAdmin();
+
+      allow delete: if isAdmin();
+
+      // Subcollection: Addresses
+      match /addresses/{addressId} {
+        allow read, write: if isOwner(userId) || isStaff();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. CATEGORIES
+    // -------------------------------------------------------------------------
+    match /categories/{categoryId} {
+      allow read: if resource.data.isActive == true || isStaff();
+      allow write: if isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. PRODUCTS, VARIANTS & IMAGES
+    // -------------------------------------------------------------------------
+    match /products/{productId} {
+      allow read: if resource.data.status == 'ACTIVE' || isStaff();
+      allow write: if isAdmin();
+
+      match /variants/{variantId} {
+        allow read: if resource.data.isActive == true || isStaff();
+        allow write: if isAdmin();
+      }
+
+      match /images/{imageId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. CARTS & CART ITEMS
+    // -------------------------------------------------------------------------
+    match /carts/{cartId} {
+      allow read: if (isSignedIn() && resource.data.userId == request.auth.uid) || isStaff();
+      
+      allow create: if (isSignedIn() && request.resource.data.userId == request.auth.uid)
+        || (!isSignedIn() && request.resource.data.guestId != null);
+
+      allow update, delete: if (isSignedIn() && resource.data.userId == request.auth.uid)
+        || isStaff();
+
+      match /items/{itemId} {
+        allow read, write: if (isSignedIn() && get(/databases/$(database)/documents/carts/$(cartId)).data.userId == request.auth.uid)
+          || isStaff();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. ORDERS & ORDER SUBCOLLECTIONS (SERVER-OWNED MUTATIONS)
+    // -------------------------------------------------------------------------
+    match /orders/{orderId} {
+      // Customer reads own orders; Staff/Admin can read all
+      allow read: if (isSignedIn() && resource.data.userId == request.auth.uid) || isStaff();
+      
+      // All creations and status updates MUST go through trusted Cloud Functions
+      allow write: if false;
+
+      match /items/{itemId} {
+        allow read: if (isSignedIn() && get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid) || isStaff();
+        allow write: if false;
+      }
+
+      match /payments/{paymentId} {
+        allow read: if (isSignedIn() && get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid) || isStaff();
+        allow write: if false;
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. INVENTORY & INVENTORY MOVEMENTS (SERVER-ONLY)
+    // -------------------------------------------------------------------------
+    match /inventory/{variantId} {
+      allow read: if isStaff();
+      allow write: if false;
+    }
+
+    match /inventoryMovements/{movementId} {
+      allow read: if isStaff();
+      allow write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. COUPONS & REDEMPTIONS (VALIDATED & MANAGED SERVER-SIDE)
+    // -------------------------------------------------------------------------
+    match /coupons/{couponId} {
+      allow read: if isStaff();
+      allow write: if isAdmin();
+    }
+
+    match /couponRedemptions/{redemptionId} {
+      allow read: if (isSignedIn() && resource.data.userId == request.auth.uid) || isStaff();
+      allow write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // 8. REVIEWS
+    // -------------------------------------------------------------------------
+    match /reviews/{reviewId} {
+      allow read: if resource.data.status == 'APPROVED' 
+        || (isSignedIn() && resource.data.userId == request.auth.uid)
+        || isStaff();
+
+      // Customers can submit a review, but initial status is PENDING and verifiedPurchase is FALSE
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == 'PENDING'
+        && request.resource.data.verifiedPurchase == false;
+
+      allow update: if isStaff();
+      allow delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+    }
+
+    // -------------------------------------------------------------------------
+    // 9. BLOG POSTS
+    // -------------------------------------------------------------------------
+    match /blogPosts/{postId} {
+      allow read: if resource.data.status == 'PUBLISHED' || isStaff();
+      allow write: if isStaff();
+    }
+
+    // -------------------------------------------------------------------------
+    // 10. CONTACT MESSAGES & NEWSLETTER (INGESTED VIA FUNCTIONS)
+    // -------------------------------------------------------------------------
+    match /contactMessages/{messageId} {
+      allow read: if isStaff();
+      allow write: if false;
+    }
+
+    match /newsletterSubscribers/{subscriberId} {
+      allow read: if isStaff();
+      allow write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // 11. PAYMENT EVENTS & AUDIT LOGS (SERVER-ONLY)
+    // -------------------------------------------------------------------------
+    match /paymentEvents/{eventId} {
+      allow read: if isStaff();
+      allow write: if false;
+    }
+
+    match /adminAuditLogs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+  }
+}

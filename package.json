@@ -1,0 +1,22 @@
+{
+  "name": "mushbio",
+  "version": "1.0.0",
+  "description": "MushBio — Fresh Organic Mushrooms E-Commerce Platform",
+  "private": true,
+  "scripts": {
+    "emulators:start": "firebase emulators:start --only auth,firestore,functions,storage",
+    "emulators:export": "firebase emulators:export ./emulators-data",
+    "emulators:import": "firebase emulators:start --import=./emulators-data --export-on-exit",
+    "deploy:firestore": "firebase deploy --only firestore",
+    "deploy:storage": "firebase deploy --only storage",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage",
+    "functions:build": "npm --prefix functions run build",
+    "functions:watch": "npm --prefix functions run watch",
+    "functions:lint": "npm --prefix functions run lint"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.31.0",
+    "shadcn": "^4.19.0"
+  }
+}

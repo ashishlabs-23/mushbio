@@ -1,0 +1,36 @@
+{
+  "name": "mushbio-functions",
+  "version": "1.0.0",
+  "description": "MushBio Cloud Functions Backend Foundation",
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "npm run build && node lib/test/rules.test.js && node lib/test/api.test.js && node lib/test/inventory.test.js && node lib/test/auth.test.js && node lib/test/addresses.test.js && node lib/test/cart.test.js && node lib/test/orders.test.js && node lib/test/coupons.test.js && node lib/test/payments.test.js && node lib/test/location.test.js && node lib/test/webhooks.test.js",
+    "seed": "npm run build && node lib/seed/seedRunner.js",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.1.0",
+    "firebase-functions": "^6.3.0",
+    "razorpay": "^2.9.8",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^20.17.19",
+    "typescript": "^5.7.3"
+  },
+  "private": true
+}
