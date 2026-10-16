@@ -136,6 +136,19 @@ export class OrderRepository {
   }
 
   /**
+   * Find orders pending payment older than threshold for reservation release
+   */
+  async findStalePendingOrders(olderThan: FirebaseFirestore.Timestamp): Promise<OrderDocument[]> {
+    const snap = await this.ordersCol
+      .where("status", "==", "PAYMENT_PENDING")
+      .where("createdAt", "<=", olderThan)
+      .limit(50)
+      .get();
+
+    return snap.docs.map((doc) => ({ ...(doc.data() as OrderDocument), id: doc.id }));
+  }
+
+  /**
    * Record admin/server audit trail log
    */
   async recordAuditLog(log: AdminAuditLogDocument): Promise<void> {

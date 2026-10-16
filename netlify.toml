@@ -1,0 +1,22 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/api/v1/*"
+  to = "https://asia-south1-mushbio-organics.cloudfunctions.net/api/v1/:splat"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(self), camera=(), microphone=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

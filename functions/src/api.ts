@@ -29,8 +29,31 @@ import { safeLogger } from "./utils/logger";
 
 export const app = express();
 
-// Global Middlewares
-app.use(cors({ origin: true }));
+// Explicit origin validation for CORS (prevents unrestricted reflection)
+const allowedOrigins = [
+  "https://mushbio-organics.netlify.app",
+  "https://mushbio.com",
+  "https://www.mushbio.com",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (server-to-server webhooks, curl, test suites)
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.includes(origin) ||
+        !config.isProduction ||
+        origin.startsWith("http://localhost:") ||
+        origin.startsWith("http://127.0.0.1:")
+      ) {
+        return callback(null, true);
+      }
+      return callback(new Error("CORS origin not allowed by policy"), false);
+    },
+    credentials: true,
+  })
+);
 
 // Express JSON Parser with Raw Body Preservation (Mandatory for Webhook HMAC Signature Verification)
 // Max payload size capped at 1MB to protect against oversized payload abuse

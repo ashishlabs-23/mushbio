@@ -14,6 +14,7 @@
   <script defer src="script.js?v=3.1"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
   <!-- SITE HEADER -->
   <header class="site-nav">
@@ -67,7 +68,7 @@
     <a href="index.html#contact">Contact</a>
   </div>
 
-  <main>
+  <main id="main-content">
     <!-- PAGE TITLE BANNER -->
     <section class="page-title-banner">
       <div class="shell">
@@ -88,12 +89,12 @@
       <aside class="shop-sidebar">
         <h3 class="sidebar-title">Categories</h3>
         <ul class="category-filter-list">
-          <li><button class="cat-filter-btn active" data-cat="all">All Mushrooms <span class="count">9</span></button></li>
-          <li><button class="cat-filter-btn" data-cat="oyster">Oyster <span class="count">2</span></button></li>
-          <li><button class="cat-filter-btn" data-cat="button">Button <span class="count">2</span></button></li>
+          <li><button class="cat-filter-btn active" data-cat="all">All Mushrooms <span class="count">12</span></button></li>
+          <li><button class="cat-filter-btn" data-cat="oyster">Oyster <span class="count">3</span></button></li>
+          <li><button class="cat-filter-btn" data-cat="button">Button <span class="count">3</span></button></li>
           <li><button class="cat-filter-btn" data-cat="shiitake">Shiitake <span class="count">2</span></button></li>
           <li><button class="cat-filter-btn" data-cat="milky">Milky <span class="count">2</span></button></li>
-          <li><button class="cat-filter-btn" data-cat="portobello">Portobello <span class="count">1</span></button></li>
+          <li><button class="cat-filter-btn" data-cat="portobello">Portobello <span class="count">2</span></button></li>
         </ul>
 
         <div class="filter-section">
@@ -111,9 +112,9 @@
           <span class="filter-heading">Weight</span>
           <div class="checkbox-list">
             <label class="checkbox-item"><input class="weight-chk" type="checkbox" value="250g"> 250g</label>
+            <label class="checkbox-item"><input class="weight-chk" type="checkbox" value="400g"> 400g</label>
             <label class="checkbox-item"><input class="weight-chk" type="checkbox" value="500g"> 500g</label>
             <label class="checkbox-item"><input class="weight-chk" type="checkbox" value="1kg"> 1kg</label>
-            <label class="checkbox-item"><input class="weight-chk" type="checkbox" value="2kg"> 2kg</label>
           </div>
         </div>
 
@@ -128,7 +129,7 @@
       <!-- Main Products Display -->
       <div class="shop-main-content">
         <div class="shop-toolbar">
-          <span class="results-count" id="resultsCount">Showing 1–9 of 9 products</span>
+          <span class="results-count" id="resultsCount">Showing 1–12 of 12 products</span>
           <div style="display:flex;align-items:center;gap:10px">
             <span style="font-size:12px;color:var(--muted)">Sort by:</span>
             <select class="sort-select" id="sortSelect">

@@ -9,25 +9,86 @@
 // 1. PRODUCT DATABASE
 // ==========================================
 const PRODUCTS = [
-  { id: 1, name: "Oyster Mushroom", category: "oyster", price: 280, weight: "1kg", image: "assets/oyster.jpg", rating: 4.9, reviews: 128, inStock: true, desc: "Delicate, velvety texture with a subtle woody taste." },
-  { id: 2, name: "Button Mushroom", category: "button", price: 120, weight: "500g", image: "assets/button.jpg", rating: 4.8, reviews: 94, inStock: true, desc: "Classic mild flavor, firm and versatile for every culinary dish." },
-  { id: 3, name: "Shiitake Mushroom", category: "shiitake", price: 180, weight: "250g", image: "assets/shiitake.jpg", rating: 5.0, reviews: 210, inStock: true, desc: "Rich savory umami profile, ideal for broths and stir-fries." },
-  { id: 4, name: "Milky Mushroom", category: "milky", price: 150, weight: "250g", image: "assets/milky.jpg", rating: 4.7, reviews: 62, inStock: true, desc: "Thick, tender stems with an appetizing firm bite." },
-  { id: 5, name: "Portobello Mushroom", category: "portobello", price: 200, weight: "250g", image: "assets/portobello.jpg", rating: 4.9, reviews: 115, inStock: true, desc: "Hearty, robust and meaty caps perfect for grilling." },
-  { id: 6, name: "Oyster Mushroom (Small)", category: "oyster", price: 160, weight: "500g", image: "assets/oyster.jpg", rating: 4.8, reviews: 88, inStock: true, desc: "Fresh tender cluster harvested daily from our organic beds." },
-  { id: 7, name: "Shiitake Mushroom (Family)", category: "shiitake", price: 340, weight: "500g", image: "assets/shiitake.jpg", rating: 5.0, reviews: 142, inStock: true, desc: "Handpicked premium grade shiitake caps." },
-  { id: 8, name: "Button Mushroom (Bulk)", category: "button", price: 220, weight: "1kg", image: "assets/button.jpg", rating: 4.9, reviews: 78, inStock: true, desc: "Crisp white buttons in a fresh farm-pack box." },
-  { id: 9, name: "Milky Mushroom (Large)", category: "milky", price: 380, weight: "1kg", image: "assets/milky.jpg", rating: 4.8, reviews: 51, inStock: true, desc: "Generous organic milky mushrooms." },
-  { id: 10, name: "Golden Oyster Clusters", category: "oyster", price: 310, weight: "500g", image: "assets/oyster.jpg", rating: 4.9, reviews: 76, inStock: true, desc: "Vibrant golden caps rich in aroma and delicate texture." },
-  { id: 11, name: "Cremini Brown Mushrooms", category: "button", price: 170, weight: "400g", image: "assets/button.jpg", rating: 4.8, reviews: 89, inStock: true, desc: "Earthy baby bellas with rich flavor and firm caps." },
-  { id: 12, name: "Portobello Jumbo Grilling", category: "portobello", price: 350, weight: "500g", image: "assets/portobello.jpg", rating: 5.0, reviews: 98, inStock: true, desc: "Jumbo selected organic caps, ideal for roasting and burgers." }
+  { id: 1, productId: "prod_oyster_pearl", variantId: "var_oyster_1kg", name: "Oyster Mushroom", category: "oyster", price: 280, weight: "1kg", image: "assets/oyster.jpg", rating: 4.9, reviews: 128, inStock: true, desc: "Delicate, velvety texture with a subtle woody taste." },
+  { id: 2, productId: "prod_button_white", variantId: "var_btn_500g", name: "Button Mushroom", category: "button", price: 120, weight: "500g", image: "assets/button.jpg", rating: 4.8, reviews: 94, inStock: true, desc: "Classic mild flavor, firm and versatile for every culinary dish." },
+  { id: 3, productId: "prod_shiitake_fresh", variantId: "var_shi_250g", name: "Shiitake Mushroom", category: "shiitake", price: 180, weight: "250g", image: "assets/shiitake.jpg", rating: 5.0, reviews: 210, inStock: true, desc: "Rich savory umami profile, ideal for broths and stir-fries." },
+  { id: 4, productId: "prod_milky_fresh", variantId: "var_mlk_250g", name: "Milky Mushroom", category: "milky", price: 150, weight: "250g", image: "assets/milky.jpg", rating: 4.7, reviews: 62, inStock: true, desc: "Thick, tender stems with an appetizing firm bite." },
+  { id: 5, productId: "prod_portobello_fresh", variantId: "var_por_250g", name: "Portobello Mushroom", category: "portobello", price: 200, weight: "250g", image: "assets/portobello.jpg", rating: 4.9, reviews: 115, inStock: true, desc: "Hearty, robust and meaty caps perfect for grilling." },
+  { id: 6, productId: "prod_oyster_pearl", variantId: "var_oyster_500g", name: "Oyster Mushroom (Small)", category: "oyster", price: 160, weight: "500g", image: "assets/oyster.jpg", rating: 4.8, reviews: 88, inStock: true, desc: "Fresh tender cluster harvested daily from our organic beds." },
+  { id: 7, productId: "prod_shiitake_fresh", variantId: "var_shi_500g", name: "Shiitake Mushroom (Family)", category: "shiitake", price: 340, weight: "500g", image: "assets/shiitake.jpg", rating: 5.0, reviews: 142, inStock: true, desc: "Handpicked premium grade shiitake caps." },
+  { id: 8, productId: "prod_button_white", variantId: "var_btn_1kg", name: "Button Mushroom (Bulk)", category: "button", price: 220, weight: "1kg", image: "assets/button.jpg", rating: 4.9, reviews: 78, inStock: true, desc: "Crisp white buttons in a fresh farm-pack box." },
+  { id: 9, productId: "prod_milky_fresh", variantId: "var_mlk_1kg", name: "Milky Mushroom (Large)", category: "milky", price: 380, weight: "1kg", image: "assets/milky.jpg", rating: 4.8, reviews: 51, inStock: true, desc: "Generous organic milky mushrooms." },
+  { id: 10, productId: "prod_oyster_blue", variantId: "var_blue_500g", name: "Golden Oyster Clusters", category: "oyster", price: 310, weight: "500g", image: "assets/oyster.jpg", rating: 4.9, reviews: 76, inStock: true, desc: "Vibrant golden caps rich in aroma and delicate texture." },
+  { id: 11, productId: "prod_button_cremini", variantId: "var_crm_250g", name: "Cremini Brown Mushrooms", category: "button", price: 170, weight: "400g", image: "assets/button.jpg", rating: 4.8, reviews: 89, inStock: true, desc: "Earthy baby bellas with rich flavor and firm caps." },
+  { id: 12, productId: "prod_portobello_steak", variantId: "var_stk_500g", name: "Portobello Jumbo Grilling", category: "portobello", price: 350, weight: "500g", image: "assets/portobello.jpg", rating: 5.0, reviews: 98, inStock: true, desc: "Jumbo selected organic caps, ideal for roasting and burgers." }
 ];
 
 // ==========================================
 // 2. STATE MANAGEMENT (CART & STORAGE)
 // ==========================================
-let cart = JSON.parse(localStorage.getItem("mushbio_cart") || "[]");
-let appliedPromo = localStorage.getItem("mushbio_promo") || null;
+const safeStorage = {
+  get(key, fallback = null) {
+    try {
+      const value = localStorage.getItem(key);
+      return value === null ? fallback : value;
+    } catch {
+      return fallback;
+    }
+  },
+  set(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+};
+
+function getSafeNumber(value, fallback = 0) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : fallback;
+}
+
+function sanitizeCart(items = []) {
+  if (!Array.isArray(items)) return [];
+
+  return items
+    .filter(item => item && typeof item === "object")
+    .map(item => {
+      const qty = Math.max(0, Math.floor(getSafeNumber(item.qty, 0)));
+      const price = getSafeNumber(item.price, 0);
+      if (!item.id || qty <= 0 || !Number.isFinite(price) || price < 0) return null;
+      const prodRef = PRODUCTS.find(p => p.id === item.id) || {};
+      return {
+        id: Number(item.id) || item.id,
+        productId: item.productId || prodRef.productId || String(item.id),
+        variantId: item.variantId || prodRef.variantId || `var_${item.id}_default`,
+        name: String(item.name || "Product"),
+        price,
+        weight: String(item.weight || "Standard"),
+        image: String(item.image || ""),
+        qty
+      };
+    })
+    .filter(Boolean);
+}
+
+function getCartSubtotal(items = cart) {
+  return sanitizeCart(items).reduce((sum, item) => sum + (item.price * item.qty), 0);
+}
+
+function readStoredCart() {
+  const raw = safeStorage.get("mushbio_cart", "[]");
+  try {
+    return sanitizeCart(JSON.parse(raw));
+  } catch {
+    return [];
+  }
+}
+
+let cart = readStoredCart();
+let appliedPromo = safeStorage.get("mushbio_promo") || null;
 
 const $ = sel => document.querySelector(sel);
 const $$ = sel => [...document.querySelectorAll(sel)];
@@ -43,15 +104,41 @@ function escapeHTML(str) {
   }[tag] || tag));
 }
 
-function saveCart() {
-  localStorage.setItem("mushbio_cart", JSON.stringify(cart));
-  updateCartCounters();
-  renderDrawerCart();
-  if (typeof renderFullCart === "function") renderFullCart();
+const renderScheduler = { pending: false };
+
+function queueCartRender() {
+  if (renderScheduler.pending) return;
+  renderScheduler.pending = true;
+
+  requestAnimationFrame(() => {
+    renderScheduler.pending = false;
+    renderDrawerCart();
+    if (typeof renderFullCart === "function") renderFullCart();
+    updateCartCounters();
+  });
 }
 
+function saveCart() {
+  cart = sanitizeCart(cart);
+  const saved = safeStorage.set("mushbio_cart", JSON.stringify(cart));
+  if (!saved) console.warn("Cart could not be persisted to localStorage.");
+  queueCartRender();
+}
+
+window.addEventListener("storage", (event) => {
+  if (event.key === "mushbio_cart") {
+    cart = readStoredCart();
+    queueCartRender();
+  }
+
+  if (event.key === "mushbio_promo") {
+    appliedPromo = safeStorage.get("mushbio_promo") || null;
+    if (typeof renderFullCart === "function") renderFullCart();
+  }
+});
+
 function updateCartCounters() {
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const totalItems = sanitizeCart(cart).reduce((sum, item) => sum + item.qty, 0);
   $$(".cart-count").forEach(el => {
     el.textContent = totalItems;
     el.classList.add("bump");
@@ -64,18 +151,21 @@ function addToCart(productId, weightVariant = null, quantity = 1) {
   if (!product) return;
 
   const targetWeight = weightVariant || product.weight;
+  const normalizedQty = Math.max(1, Math.floor(getSafeNumber(quantity, 1)));
   const existing = cart.find(item => item.id === product.id && item.weight === targetWeight);
 
   if (existing) {
-    existing.qty += quantity;
+    existing.qty += normalizedQty;
   } else {
     cart.push({
       id: product.id,
+      productId: product.productId || `prod_${product.category}`,
+      variantId: product.variantId || `var_${product.category}_${product.id}`,
       name: product.name,
       price: product.price,
       weight: targetWeight,
       image: product.image,
-      qty: quantity
+      qty: normalizedQty
     });
   }
 
@@ -85,18 +175,24 @@ function addToCart(productId, weightVariant = null, quantity = 1) {
 }
 
 function updateItemQty(index, delta) {
-  if (!cart[index]) return;
-  cart[index].qty += delta;
-  if (cart[index].qty <= 0) {
-    cart.splice(index, 1);
+  const nextCart = sanitizeCart(cart);
+  if (!nextCart[index]) return;
+
+  nextCart[index].qty += Math.floor(getSafeNumber(delta, 0));
+  if (nextCart[index].qty <= 0) {
+    nextCart.splice(index, 1);
   }
+
+  cart = nextCart;
   saveCart();
 }
 
 function removeCartItem(index) {
-  if (!cart[index]) return;
-  const removedName = cart[index].name;
-  cart.splice(index, 1);
+  const nextCart = sanitizeCart(cart);
+  if (!nextCart[index]) return;
+  const removedName = nextCart[index].name;
+  nextCart.splice(index, 1);
+  cart = nextCart;
   saveCart();
   showToast(`Removed ${escapeHTML(removedName)} from cart`);
 }
@@ -106,6 +202,9 @@ function showToast(msg) {
   if (!toastEl) {
     toastEl = document.createElement("div");
     toastEl.className = "toast";
+    toastEl.setAttribute("role", "status");
+    toastEl.setAttribute("aria-live", "polite");
+    toastEl.setAttribute("aria-atomic", "true");
     document.body.appendChild(toastEl);
   }
   toastEl.innerHTML = `<span>✓</span> ${msg}`;
@@ -118,18 +217,24 @@ function showToast(msg) {
 // ==========================================
 function openCartDrawer() {
   const overlay = $(".cart-drawer-overlay");
+  const trigger = $(".cart-trigger-btn");
   if (overlay) {
     overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
     document.body.classList.add("no-scroll");
   }
+  if (trigger) trigger.setAttribute("aria-expanded", "true");
 }
 
 function closeCartDrawer() {
   const overlay = $(".cart-drawer-overlay");
+  const trigger = $(".cart-trigger-btn");
   if (overlay) {
     overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden", "true");
     document.body.classList.remove("no-scroll");
   }
+  if (trigger) trigger.setAttribute("aria-expanded", "false");
 }
 
 function renderDrawerCart() {
@@ -140,7 +245,9 @@ function renderDrawerCart() {
 
   if (!list) return;
 
-  if (cart.length === 0) {
+  const normalizedCart = sanitizeCart(cart);
+
+  if (normalizedCart.length === 0) {
     list.innerHTML = `<div style="text-align:center;padding:50px 20px;color:var(--muted)">
       <p style="font-size:16px;font-weight:600;margin-bottom:8px">Your cart is empty</p>
       <small>Discover fresh, organic mushrooms from our farm.</small>
@@ -152,12 +259,12 @@ function renderDrawerCart() {
     return;
   }
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const subtotal = getCartSubtotal(normalizedCart);
 
-  list.innerHTML = cart.map((item, idx) => `
+  list.innerHTML = normalizedCart.map((item, idx) => `
     <div class="drawer-item-card">
       <div class="drawer-item-thumb">
-        <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.name)}">
+        <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.name)}" loading="lazy" decoding="async">
       </div>
       <div class="drawer-item-details">
         <div class="drawer-item-top">
@@ -206,7 +313,9 @@ function renderFullCart() {
 
   if (!container) return;
 
-  if (cart.length === 0) {
+  const normalizedCart = sanitizeCart(cart);
+
+  if (normalizedCart.length === 0) {
     container.innerHTML = `
       <div style="text-align:center;padding:60px 20px;color:var(--muted)">
         <h3 style="font-family:'Playfair Display',serif;font-size:24px;margin-bottom:10px">Your cart is empty</h3>
@@ -220,14 +329,14 @@ function renderFullCart() {
     return;
   }
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const subtotal = getCartSubtotal(normalizedCart);
   const shipping = subtotal >= 500 || subtotal === 0 ? 0 : 40;
   const discount = appliedPromo === "MUSH10" ? Math.round(subtotal * 0.1) : 0;
   const finalTotal = subtotal + shipping - discount;
 
-  container.innerHTML = cart.map((item, idx) => `
+  container.innerHTML = normalizedCart.map((item, idx) => `
     <div class="cart-item-row">
-      <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.name)}">
+      <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.name)}" loading="lazy" decoding="async">
       <div class="cart-item-info">
         <strong>${escapeHTML(item.name)}</strong>
         <small>Size / Weight: ${escapeHTML(item.weight)}</small>
@@ -257,6 +366,7 @@ function openSearchModal() {
   const modal = $("#searchModal");
   if (modal) {
     modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
     const input = $("#searchLiveInput");
     if (input) {
       input.value = "";
@@ -268,7 +378,10 @@ function openSearchModal() {
 
 function closeSearchModal() {
   const modal = $("#searchModal");
-  if (modal) modal.classList.remove("open");
+  if (modal) {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+  }
 }
 
 function renderSearchResults(query) {
@@ -287,7 +400,7 @@ function renderSearchResults(query) {
 
   list.innerHTML = matches.map(p => `
     <div class="search-match-item" onclick="location.href='shop.html?search=${encodeURIComponent(p.name)}'">
-      <img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}">
+      <img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" decoding="async">
       <div class="search-result-info">
         <strong>${escapeHTML(p.name)}</strong>
         <small>${escapeHTML(p.weight)} · ₹${p.price} — ${escapeHTML(p.desc)}</small>
@@ -358,7 +471,7 @@ function filterProducts(resetPage = false) {
   grid.innerHTML = pageItems.map(p => `
     <article class="product-card">
       <div class="product-img-wrap">
-        <img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}">
+        <img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" decoding="async">
       </div>
       <div class="product-body">
         <h3 class="product-title">${escapeHTML(p.name)}</h3>
@@ -405,6 +518,27 @@ function goToShopPage(pageNum) {
     const yOffset = shopHead.getBoundingClientRect().top + window.pageYOffset - 85;
     window.scrollTo({ top: yOffset, behavior: "smooth" });
   }
+}
+
+function validateCheckoutState() {
+  const cleanedCart = sanitizeCart(cart);
+
+  if (!cleanedCart.length) {
+    return { ok: false, message: "Your cart is empty. Add items before checkout." };
+  }
+
+  const invalidItem = cleanedCart.find(item => !Number.isInteger(item.qty) || item.qty < 1 || item.price < 0 || !item.name || !item.weight);
+  if (invalidItem) {
+    return { ok: false, message: "One or more cart items are invalid. Please review your basket." };
+  }
+
+  const savedAddressSelect = document.getElementById("savedAddressSelect");
+  const selectedAddress = savedAddressSelect?.value || selectedDeliveryAddressId;
+  if (!selectedAddress) {
+    return { ok: false, message: "Please choose or add a delivery address before checkout." };
+  }
+
+  return { ok: true, cart: cleanedCart };
 }
 
 function initShopFilters() {
@@ -1097,13 +1231,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuToggle = $(".menu-toggle");
   const mobileMenu = $(".mobile-menu");
   if (menuToggle && mobileMenu) {
+    menuToggle.setAttribute("aria-expanded", "false");
     menuToggle.addEventListener("click", () => {
       const isOpen = mobileMenu.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
       document.body.classList.toggle("no-scroll", isOpen);
     });
     $$(".mobile-menu a").forEach(a => {
       a.addEventListener("click", () => {
         mobileMenu.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
         document.body.classList.remove("no-scroll");
       });
     });
@@ -1148,7 +1285,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const val = ($("#promoInput")?.value || "").trim().toUpperCase();
     if (val === "MUSH10") {
       appliedPromo = "MUSH10";
-      localStorage.setItem("mushbio_promo", "MUSH10");
+      safeStorage.set("mushbio_promo", "MUSH10");
       showToast("Coupon MUSH10 Applied! 10% Discount Added.");
       renderFullCart();
     } else {
@@ -1273,11 +1410,15 @@ function initNavScrollSpy() {
 /** State for the currently selected delivery address */
 let selectedDeliveryAddressId = null;
 
+// Privacy note for deferred payment/GPS work:
+// only collect geolocation and payment metadata on explicit user intent, keep raw coordinates server-side,
+// and never persist sensitive personal data in browser storage without clear consent.
+
 /** Helper: get the API base URL */
 function getApiBase() {
   const host = window.location.hostname;
   if (host === "localhost" || host === "127.0.0.1") {
-    return `http://${host}:5001/mushbio-organics/asia-south1/api/api/v1`;
+    return `http://${host}:5001/mushbio-organics/asia-south1/api/v1`;
   }
   return "/api/v1";
 }
@@ -1616,6 +1757,14 @@ async function handleProceedToCheckout() {
   }
 
   try {
+    const validation = validateCheckoutState();
+    if (!validation.ok) {
+      setStatus(validation.message, "error");
+      setBusy(false);
+      showToast(validation.message);
+      return;
+    }
+
     setBusy(true);
     setStatus("Checking authentication…", "info");
 
@@ -1635,33 +1784,29 @@ async function handleProceedToCheckout() {
 
     const idToken = await currentUser.getIdToken();
 
-    // 2. Ensure cart is non-empty
-    if (!cart || cart.length === 0) {
-      setStatus("Your cart is empty. Add items before checkout.", "error");
-      setBusy(false);
-      return;
-    }
-
     setStatus("Syncing cart with server…", "info");
 
     // 3. Determine base API URL (shared helper from Phase 10A)
     const API_BASE = getApiBase();
 
-    // 4. Sync local localStorage cart items to server cart
-    for (const item of cart) {
-      await fetch(`${API_BASE}/cart/items`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${idToken}`,
-        },
-        body: JSON.stringify({
-          productId: item.productId || String(item.id),
-          variantId: item.variantId || `var_${item.id}_default`,
-          quantity: item.qty,
-        }),
-      });
-    }
+    // 4. Sync local localStorage cart items to server cart concurrently (eliminates sequential network latency)
+    await Promise.all(
+      cart.map((item) => {
+        const prodRef = PRODUCTS.find((p) => p.id === item.id) || {};
+        return fetch(`${API_BASE}/cart/items`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${idToken}`,
+          },
+          body: JSON.stringify({
+            productId: item.productId || prodRef.productId || String(item.id),
+            variantId: item.variantId || prodRef.variantId || `var_${item.id}_default`,
+            quantity: item.qty,
+          }),
+        });
+      })
+    );
 
     setStatus("Creating your order…", "info");
 

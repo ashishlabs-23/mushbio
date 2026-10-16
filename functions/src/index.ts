@@ -63,6 +63,29 @@ export const health = onRequest(
   }
 );
 
+/**
+ * Scheduled cleanup of stale PAYMENT_PENDING orders (runs every 15 minutes)
+ * Automatically releases locked inventory for abandoned checkout sessions.
+ */
+export const cleanupExpiredReservations = onRequest(
+  {
+    region: "asia-south1",
+    timeoutSeconds: 120,
+    invoker: "private",
+  },
+  async (req, res) => {
+    try {
+      safeLogger.info("Starting cleanup of expired order reservations");
+      const { orderService } = await import("./orders/service");
+      const result = await orderService.cleanupStalePendingOrders(15);
+      safeLogger.info("Expired reservations cleanup completed", result);
+      res.status(200).json({ status: "ok", data: result });
+    } catch (err) {
+      handleFunctionError(err, res);
+    }
+  }
+);
+
 // Module exports
 export * from "./categories";
 export * from "./products";

@@ -341,6 +341,27 @@ export class OrderService {
   async markPaymentFailed(orderId: string, reason?: string): Promise<void> {
     await this.statusSvc.handlePaymentFailure(orderId, "FAILED", reason);
   }
+
+  /**
+   * 6. Clean up abandoned/expired orders and release reserved stock automatically
+   */
+  async cleanupStalePendingOrders(maxAgeMinutes = 15): Promise<{ cancelledCount: number; orderIds: string[] }> {
+    const thresholdMillis = Date.now() - maxAgeMinutes * 60 * 1000;
+    const threshold = Timestamp.fromMillis(thresholdMillis);
+    const staleOrders = await this.repo.findStalePendingOrders(threshold);
+    const orderIds: string[] = [];
+
+    for (const order of staleOrders) {
+      try {
+        await this.statusSvc.transitionStatus(order.userId, order.id, "CANCELLED", "Order checkout session expired");
+        orderIds.push(order.id);
+      } catch {
+        // Continue processing other stale orders if one fails
+      }
+    }
+
+    return { cancelledCount: orderIds.length, orderIds };
+  }
 }
 
 export const orderService = new OrderService();
